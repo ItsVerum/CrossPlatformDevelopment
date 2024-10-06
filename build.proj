@@ -1,23 +1,32 @@
-<Project DefaultTargets="BuildAndTest" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- Ціль для побудови рішення -->
-  <Target Name="BuildSolution">
-    <MSBuild Projects="Labs.sln" Targets="Build" />
+  <!-- Загальні властивості -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <!-- Якщо $(Solution) не визначений, наприклад, встановлюємо LAB1 -->
+    <Solution Condition="'$(Solution)' == ''">Lab1</Solution>
+  </PropertyGroup>
+
+  <!-- Визначення основного проекту та тестового проекту -->
+  <ItemGroup Condition="'$(Solution)' != ''">
+    <MainProjectFile Include="$(Solution)\$(Solution).csproj" />
+    <TestProjectFile Include="$(Solution).Tests\$(Solution).Tests.csproj" />
+  </ItemGroup>
+
+  <!-- Ціль для побудови проектів -->
+  <Target Name="Build">
+    <MSBuild Projects="@(MainProjectFile);@(TestProjectFile)" Targets="Restore;Build" />
   </Target>
 
-  <!-- Ціль для запуску тестів -->
-  <Target Name="RunTests" DependsOnTargets="BuildSolution">
-    <Exec Command="dotnet test Lab1.Tests/Lab1.Tests.csproj" />
-    <Exec Command="dotnet test Lab2.Tests/Lab2.Tests.csproj" />
+  <!-- Ціль для тестування проектів -->
+  <Target Name="Test" DependsOnTargets="Build">
+    <Exec Command="dotnet test @(TestProjectFile) --logger &quot;console;verbosity=detailed&quot;" />
   </Target>
 
-  <!-- Ціль для запуску проекту LABS -->
-  <Target Name="RunLabs" DependsOnTargets="BuildSolution">
-   <Exec Command="dotnet run --project Lab1/Lab1.csproj -- Lab1\INPUT.TXT" />
-   <Exec Command="dotnet run --project Lab2/Lab2.csproj -- Lab2\INPUT.TXT" />
+  <!-- Ціль для запуску основного проекту -->
+  <Target Name="Run" DependsOnTargets="Build">
+    <Exec Command="dotnet run --project &quot;@(MainProjectFile)&quot;" />
   </Target>
-
-  <!-- Ціль для побудови, тестування і запуску LABS -->
-  <Target Name="BuildAndTest" DependsOnTargets="RunTests;RunLabs" />
   
 </Project>
+
