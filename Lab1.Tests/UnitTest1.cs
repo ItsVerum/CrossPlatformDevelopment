@@ -1,6 +1,5 @@
 ﻿namespace Lab1.Tests;
 using Xunit;
-using Xunit;
 using System;
 using System.Numerics;
 
