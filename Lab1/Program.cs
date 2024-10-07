@@ -32,8 +32,8 @@ namespace Lab1
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
-                string inputFilePath = args.Length > 0 ? args[0] : Path.Combine("LAB1", "INPUT.TXT");
-                string outputFilePath = Path.Combine("LAB1", "OUTPUT.TXT");
+                string inputFilePath = args.Length > 0 ? args[0] : Path.Combine("Lab1", "INPUT.TXT");
+                string outputFilePath = Path.Combine("Lab1", "OUTPUT.TXT");
 
                 string[] input = File.ReadAllLines(inputFilePath);
                 var (N, A, B) = ValidateInput(input);

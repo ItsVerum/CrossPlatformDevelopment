@@ -48,16 +48,15 @@ namespace Lab3
             try
             {
                 Console.OutputEncoding = Encoding.UTF8;
-                //string inputFilePath = args.Length > 0 ? args[0] : "INPUT.TXT";
-                //string outputFilePath = Path.Combine("Lab3", "OUTPUT.TXT");
+                string inputFilePath = args.Length > 0 ? args[0] : Path.Combine("Lab3", "INPUT.TXT");
+                string outputFilePath = Path.Combine("Lab3", "OUTPUT.TXT");
 
-                //string[] input = File.ReadAllLines(inputFilePath);
-                string[] input = ["3", "p1", "2", "p1", "p2", "*****", "p2", "1", "p1", "*****", "p3", "1", "p1", "*****"];
+                string[] input = File.ReadAllLines(inputFilePath);
                 var (procedures, n) = ReadInput(input);
 
 
                 var result = CheckProcedures(procedures);
-                //File.WriteAllText(outputFilePath, string.Join(Environment.NewLine, result));
+                File.WriteAllText(outputFilePath, string.Join(Environment.NewLine, result));
 
                 Console.WriteLine("File OUTPUT.TXT successfully created");
                 Console.WriteLine("LAB #3");
@@ -74,7 +73,7 @@ namespace Lab3
         }
 
         // Клас для збереження інформації про процедури
-        class Procedure
+        public class Procedure
         {
             public string Id { get; }
             public List<string> CalledProcedures { get; }
@@ -87,7 +86,7 @@ namespace Lab3
         }
 
         // Метод для читання даних з файлу та перевірки
-        static (List<Procedure> procedures, int n) ReadInput(string[] lines)
+        public static (List<Procedure> procedures, int n) ReadInput(string[] lines)
         {
             List<Procedure> procedures = new List<Procedure>();
             int lineIndex = 0;
@@ -145,8 +144,12 @@ namespace Lab3
         }
 
         // Допоміжний метод для перевірки ідентифікаторів процедур
-        static bool IsValidIdentifier(string identifier)
+        public static bool IsValidIdentifier(string identifier)
         {
+            if (string.IsNullOrWhiteSpace(identifier) || identifier.Length == 0)
+            {
+                return false;
+            }
             foreach (char c in identifier)
             {
                 if (!char.IsLower(c) && !char.IsDigit(c))
@@ -158,7 +161,7 @@ namespace Lab3
         }
 
         // Основний метод для перевірки процедур на рекурсію
-        static StringBuilder CheckProcedures(List<Procedure> procedures)
+        public static StringBuilder CheckProcedures(List<Procedure> procedures)
         {
             Dictionary<string, Procedure> procedureDict = procedures.ToDictionary(p => p.Id, p => p);
             Dictionary<string, bool> isRecursive = procedures.ToDictionary(p => p.Id, p => false); // тримаємо результат для кожної процедури
@@ -181,7 +184,7 @@ namespace Lab3
         }
 
         // DFS-пошук для перевірки циклів
-        static bool DFS(string startProcedure, string currentProcedure, HashSet<string> visited, Dictionary<string, Procedure> procedureDict, Dictionary<string, bool> isRecursive)
+        public static bool DFS(string startProcedure, string currentProcedure, HashSet<string> visited, Dictionary<string, Procedure> procedureDict, Dictionary<string, bool> isRecursive)
         {
             // Якщо процедура вже відвідана
             if (visited.Contains(currentProcedure))
