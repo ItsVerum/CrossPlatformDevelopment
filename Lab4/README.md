@@ -1,4 +1,4 @@
-**Successfully ran programs in virtual environment windows and ubunta for macOS requires an Apple device.**
+**Successfully run programs in virtual environment windows and ubunta, for macOS requires an Apple device.**
 
 **1. Ubunta**
 
