@@ -17,6 +17,6 @@ https://forums.virtualbox.org/viewtopic.php?f=6&t=92649
 
 **3. Baget**
 
-![photo_2024-11-12_20-55-13](https://github.com/user-attachments/assets/00d8175a-35be-48c1-8829-f9e913957e4d)
+![image](https://github.com/user-attachments/assets/e56b9c5e-4277-4cc5-8a3c-56692f4950c4)
 
 
