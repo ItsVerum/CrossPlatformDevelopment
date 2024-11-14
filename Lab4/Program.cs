@@ -29,7 +29,7 @@ namespace Lab4
     {
         private void OnExecute()
         {
-            Console.WriteLine("Author: Nychyporuk Veronika IPЗ-32");
+            Console.WriteLine("Author: Nychyporuk Veronika");
             Console.WriteLine("Version: 1.0.0");
         }
     }
