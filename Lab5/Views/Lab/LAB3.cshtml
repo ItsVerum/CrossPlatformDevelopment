@@ -1,0 +1,106 @@
+﻿@model LabViewModel
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0"><i class="fa fa-flask"></i> Laboratory Work №@Model.TaskNumber</h2>
+            <h4 class="mb-0">Variant: @Model.TaskVariant</h4>
+        </div>
+
+        <div class="card-body bg-light">
+            <div class="mb-4 p-3 bg-white rounded shadow-sm">
+                <h5><i class="fa fa-tasks text-primary"></i> Task Description:</h5>
+                <p>@Model.TaskDescription</p>
+
+                <h5><i class="fa fa-sign-in text-success"></i> Input:</h5>
+                <p>@Model.InputDescription</p>
+
+                <h5><i class="fa fa-sign-out text-danger"></i> Output:</h5>
+                <p>@Model.OutputDescription</p>
+            </div>
+
+            <div class="mb-4 p-3 bg-white rounded shadow-sm">
+                <h5><i class="fa fa-file-code text-info"></i> Examples:</h5>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>INPUT.TXT</th>
+                            <th>OUTPUT.TXT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var test in Model.TestCases)
+                        {
+                            <tr>
+                                <td><pre class="bg-light p-2 rounded">@test.Input</pre></td>
+                                <td><pre class="bg-light p-2 rounded">@test.Output</pre></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card bg-white shadow-sm">
+                <div class="card-body">
+                    <h5><i class="fa fa-upload text-primary"></i> Check Solution:</h5>
+                    <form id="labForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="inputFile" class="form-label fw-bold">Input File:</label>
+                            <input type="file" class="form-control" id="inputFile" name="inputFile" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Input File Content:</label>
+                            <textarea class="form-control bg-light" id="inputContent" rows="4" readonly></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Result:</label>
+                            <textarea class="form-control bg-light" id="outputContent" rows="4" readonly></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fa fa-check"></i> Check
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function  () {
+            $('#inputFile').change(function  (e) {
+                var file = e.target.files[0];
+                var reader = new FileReader();
+                reader.onload = function  (e) {
+                    $('#inputContent').val(e.target.result);
+                };
+                reader.readAsText(file);
+            });
+
+            $('#labForm').submit(function  (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('inputFile', $('#inputFile')[0].files[0]);
+                formData.append('labNumber', '@Model.TaskNumber');
+
+                $.ajax({
+                    url: '@Url.Action("ProcessLab", "Lab")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function  (response) {
+                        $('#outputContent').val(response.output);
+                    },
+                    error: function  (error) {
+                        alert('Error: ' + error.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}
