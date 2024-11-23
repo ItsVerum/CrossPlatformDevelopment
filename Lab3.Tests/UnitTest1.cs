@@ -3,6 +3,7 @@ using System;
 using Xunit;
 using System.Collections.Generic;
 using Lab3;
+using Lab3.Library;
 
 
 public class UnitTest1
@@ -17,10 +18,10 @@ public class UnitTest1
     public void CheckProcedures_ReturnsCorrectResults(string[] input, string[] expectedOutput)
     {
         // Arrange
-        var (procedures, n) = Program.ReadInput(input);
+        var (procedures, n) = RecursiveCheck.ReadInput(input);
 
         // Act
-        var result = Program.CheckProcedures(procedures);
+        var result = RecursiveCheck.CheckProcedures(procedures);
 
         // Assert
         Assert.Equal(string.Join(Environment.NewLine, expectedOutput), result.ToString().Trim());
@@ -34,7 +35,7 @@ public class UnitTest1
         string[] input = new string[] { "2", "p1", "1", "p2", "*****", "p2", "0", "*****" };
 
         // Act
-        var (procedures, n) = Program.ReadInput(input);
+        var (procedures, n) = RecursiveCheck.ReadInput(input);
 
         // Assert
         Assert.Equal(2, n);
@@ -52,7 +53,7 @@ public class UnitTest1
         string[] input = new string[] { "2", "p1", "1", "p2", "p2", "0", "*****" };
 
         // Act & Assert
-        var ex = Assert.Throws<InvalidOperationException>(() => Program.ReadInput(input));
+        var ex = Assert.Throws<InvalidOperationException>(() => RecursiveCheck.ReadInput(input));
         Assert.Equal("Missing termination line (*****) for procedure p1 at line 5.", ex.Message);
     }
 
@@ -64,7 +65,7 @@ public class UnitTest1
         string[] input = new string[] { "1", "P1", "0", "*****" }; // Ідентифікатор містить велику літеру
 
         // Act & Assert
-        var ex = Assert.Throws<InvalidOperationException>(() => Program.ReadInput(input));
+        var ex = Assert.Throws<InvalidOperationException>(() => RecursiveCheck.ReadInput(input));
         Assert.Equal("Invalid procedure identifier at line 2. It must be non-empty, less than 100 characters, and contain only lowercase letters or digits.", ex.Message);
     }
 
@@ -76,7 +77,7 @@ public class UnitTest1
         string[] input = new string[] { "101" };
 
         // Act & Assert
-        var ex = Assert.Throws<InvalidOperationException>(() => Program.ReadInput(input));
+        var ex = Assert.Throws<InvalidOperationException>(() => RecursiveCheck.ReadInput(input));
         Assert.Equal("The first line must contain an integer n (1 <= n <= 100)!", ex.Message);
     }
 
@@ -90,7 +91,7 @@ public class UnitTest1
     public void IsValidIdentifier_ReturnsExpectedResult(string identifier, bool expected)
     {
         // Act
-        var result = Program.IsValidIdentifier(identifier);
+        var result = RecursiveCheck.IsValidIdentifier(identifier);
 
         // Assert
         Assert.Equal(expected, result);
