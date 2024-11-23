@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using VNychyporuk;
+using Lab3.Library;
 
 /*
 Умова:
